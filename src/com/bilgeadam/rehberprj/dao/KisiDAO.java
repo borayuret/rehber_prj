@@ -46,6 +46,41 @@ public class KisiDAO {
     }
 
 
+    public static boolean guncelle(KisiDTO kisi)
+            throws SQLException, ClassNotFoundException {
+
+        Connection conn = VTBaglanti.baglantiGetir();
+
+        String sorgu = "update kisi set ad=?, soyad=?, maas=?, dogtar=?, mobil_tel=? where no=?";
+
+        PreparedStatement ps = conn.prepareStatement(sorgu);
+
+
+        ps.setString(1, kisi.getAd());
+        ps.setString(2, kisi.getSoyad());
+        ps.setDouble(3, kisi.getMaas());
+
+        if (kisi.getDogtar() == null)
+            ps.setDate(4, null);
+        else
+            ps.setDate(4, CevirmeIslemleri.utilToSqlDate(kisi.getDogtar()));
+
+        ps.setString(5, kisi.getMobilTel());
+        ps.setInt(6, kisi.getNo());
+
+        int sonuc = ps.executeUpdate();
+
+        ps.close();
+        VTBaglanti.baglantiKapat(conn);
+
+        if (sonuc > 0)
+            return true;
+        else
+            return false;
+
+    }
+
+
     public static boolean sil(int no)
             throws SQLException, ClassNotFoundException {
 
