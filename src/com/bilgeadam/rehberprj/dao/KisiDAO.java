@@ -45,6 +45,30 @@ public class KisiDAO {
 
     }
 
+
+    public static boolean sil(int no)
+            throws SQLException, ClassNotFoundException {
+
+        Connection conn = VTBaglanti.baglantiGetir();
+
+        String sorgu = "delete from kisi where no=?";
+
+        PreparedStatement ps = conn.prepareStatement(sorgu);
+
+        ps.setInt(1, no);
+
+        int sonuc = ps.executeUpdate();
+
+        ps.close();
+        VTBaglanti.baglantiKapat(conn);
+
+        if (sonuc > 0)
+            return true;
+        else
+            return false;
+
+    }
+
     public static List<KisiDTO> listele() throws SQLException, ClassNotFoundException {
 
         List<KisiDTO> kisiListesi = new ArrayList();
@@ -76,5 +100,7 @@ public class KisiDAO {
 
         return kisiListesi;
     }
+
+
 
 }
